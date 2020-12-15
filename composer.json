@@ -1,0 +1,21 @@
+{
+    "name": "mediagone/cqrs-bus",
+    "type": "library",
+    "description": "DDD ready implementation of Command, Event and Query bus.",
+    "keywords": ["cqrs", "ddd", "bus", "command", "query", "event", "middleware"],
+    "license": "MIT",
+    "authors": [
+        {"name": "Bruce Suire"}
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Mediagone\\CQRS\\Bus\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.4"
+    }
+}
