@@ -5,7 +5,7 @@ namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Event;
 use Mediagone\CQRS\Bus\Domain\Event\Event;
 
 
-final class TestEvent implements Event
+final class FakeEvent implements Event
 {
     private $callback;
     

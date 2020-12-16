@@ -4,7 +4,7 @@ namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Command\Utils;
 
 use Mediagone\CQRS\Bus\Infrastructure\Command\Utils\CommandHandlerNotFoundError;
 use PHPUnit\Framework\TestCase;
-use Tests\Mediagone\CQRS\Bus\Infrastructure\Command\TestCommand;
+use Tests\Mediagone\CQRS\Bus\Infrastructure\Command\FakeCommand;
 
 
 /**
@@ -18,7 +18,7 @@ final class CommandHandlerNotFoundErrorTest extends TestCase
     
     public function test_can_be_created() : void
     {
-        $command = new TestCommand();
+        $command = new FakeCommand();
         
         self::assertInstanceOf(CommandHandlerNotFoundError::class, new CommandHandlerNotFoundError($command));
     }

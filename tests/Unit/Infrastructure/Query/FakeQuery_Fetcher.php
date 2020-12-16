@@ -6,13 +6,13 @@ use Mediagone\CQRS\Bus\Domain\Query\Query;
 use Mediagone\CQRS\Bus\Domain\Query\QueryFetcher;
 
 
-final class TestQuery_Fetcher implements QueryFetcher
+final class FakeQuery_Fetcher implements QueryFetcher
 {
     private array $handleList = [];
     
     
     /**
-     * @param TestQuery $query
+     * @param FakeQuery $query
      */
     public function fetch(Query $query)
     {

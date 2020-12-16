@@ -11,14 +11,14 @@ use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatcher;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\TestEvent;
-use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\TestEventListener;
+use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\FakeEvent;
+use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\FakeEventListener;
 
 
 /**
  * @covers \Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventCollector
  */
-final class CommandBusEventsCollectorTest extends TestCase
+final class CommandBusEventCollectorTest extends TestCase
 {
     //========================================================================================================
     // Init
@@ -31,10 +31,10 @@ final class CommandBusEventsCollectorTest extends TestCase
     
     public function setUp() : void
     {
-        $this->eventBus = new EventBusQueue(new EventBusDispatcher([new TestEventListener()]));
+        $this->eventBus = new EventBusQueue(new EventBusDispatcher([new FakeEventListener()]));
         
         $serviceLocator = new ServiceLocator([
-            TestCommand_Handler::class => fn() => new TestCommand_Handler(),
+            FakeCommand_Handler::class => fn() => new FakeCommand_Handler(),
         ]);
     
         $this->commandBus = new CommandBusEventCollector(
@@ -56,13 +56,13 @@ final class CommandBusEventsCollectorTest extends TestCase
         $commandBus = $this->commandBus;
         $messages = [];
         
-        $commandBus->do(new TestCommand(static function() use (&$messages, $eventBus) {
-            $eventBus->notify(new TestEvent(static function() use (&$messages) { $messages[] = '2 // collected'; }));
+        $commandBus->do(new FakeCommand(static function() use (&$messages, $eventBus) {
+            $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // collected'; }));
             $messages[] = '1';
-            $eventBus->notify(new TestEvent(static function() use (&$messages) { $messages[] = '3 // collected'; }));
+            $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '3 // collected'; }));
         }));
         
-        $commandBus->do(new TestCommand(static function() use (&$messages) { $messages[] = '4'; }));
+        $commandBus->do(new FakeCommand(static function() use (&$messages) { $messages[] = '4'; }));
         
         self::assertSame([
             //'start collecting events',
@@ -87,20 +87,20 @@ final class CommandBusEventsCollectorTest extends TestCase
         $exceptionRethrown = false;
         
         try {
-            $commandBus->do(new TestCommand(static function() use (&$messages, $eventBus) {
-                $eventBus->notify(new TestEvent(static function() use (&$messages) { $messages[] = '2 // should be ignored'; }));
+            $commandBus->do(new FakeCommand(static function() use (&$messages, $eventBus) {
+                $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // should be ignored'; }));
                 $messages[] = '1';
                 
                 throw new RuntimeException();
                 
-                $eventBus->dispatch(new TestEvent(static function() use (&$messages) { $messages[] = '3 // should be ignored'; }));
+                $eventBus->dispatch(new FakeEvent(static function() use (&$messages) { $messages[] = '3 // should be ignored'; }));
             }));
         }
         catch (RuntimeException $ex) {
             $exceptionRethrown = true;
         }
         
-        $commandBus->do(new TestCommand(static function() use (&$messages) {$messages[] = '4'; }));
+        $commandBus->do(new FakeCommand(static function() use (&$messages) {$messages[] = '4'; }));
         
         self::assertTrue($exceptionRethrown);
         self::assertSame(['1', '4'], $messages);

@@ -6,13 +6,13 @@ use Mediagone\CQRS\Bus\Domain\Event\Event;
 use Mediagone\CQRS\Bus\Domain\Event\EventListener;
 
 
-final class TestEventListener implements EventListener
+final class FakeEventListener implements EventListener
 {
     private $handleList = [];
     
     
     /**
-     * @param TestEvent $event
+     * @param FakeEvent $event
      */
     public function listen(Event $event) : void
     {

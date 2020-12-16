@@ -6,13 +6,13 @@ use Mediagone\CQRS\Bus\Domain\Command\Command;
 use Mediagone\CQRS\Bus\Domain\Command\CommandHandler;
 
 
-final class TestCommand_Handler implements CommandHandler
+final class FakeCommand_Handler implements CommandHandler
 {
     private array $handleList = [];
     
     
     /**
-     * @param TestCommand $command
+     * @param FakeCommand $command
      */
     public function handle(Command $command) : void
     {

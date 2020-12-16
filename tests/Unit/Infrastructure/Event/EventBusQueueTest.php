@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue
  */
-final class EventBusEventQueueTest extends TestCase
+final class EventBusQueueTest extends TestCase
 {
     //========================================================================================================
     // Init
@@ -19,12 +19,12 @@ final class EventBusEventQueueTest extends TestCase
     
     private EventBus $eventBus;
     
-    private TestEventListener $eventListener;
+    private FakeEventListener $eventListener;
     
     
     public function setUp() : void
     {
-        $this->eventListener = new TestEventListener();
+        $this->eventListener = new FakeEventListener();
         $this->eventBus = new EventBusQueue(new EventBusDispatcher([$this->eventListener]));
     }
     
@@ -36,7 +36,7 @@ final class EventBusEventQueueTest extends TestCase
     
     public function test_can_dispatch_an_event() : void
     {
-        $event = new TestEvent();
+        $event = new FakeEvent();
         $this->eventBus->notify($event);
         
         self::assertCount(1, $this->eventListener->getListenedEvents());
@@ -46,7 +46,7 @@ final class EventBusEventQueueTest extends TestCase
     
     public function test_can_collect_an_event() : void
     {
-        $event = new TestEvent();
+        $event = new FakeEvent();
         
         $this->eventBus->startCollecting();
         $this->eventBus->notify($event);
@@ -57,8 +57,8 @@ final class EventBusEventQueueTest extends TestCase
     
     public function test_can_release_collected_events() : void
     {
-        $event = new TestEvent();
-        $event2 = new TestEvent();
+        $event = new FakeEvent();
+        $event2 = new FakeEvent();
         
         $this->eventBus->startCollecting();
         $this->eventBus->notify($event);
@@ -75,7 +75,7 @@ final class EventBusEventQueueTest extends TestCase
     
     public function test_can_discard_collected_event() : void
     {
-        $event = new TestEvent();
+        $event = new FakeEvent();
         
         $this->eventBus->startCollecting();
         $this->eventBus->notify($event);

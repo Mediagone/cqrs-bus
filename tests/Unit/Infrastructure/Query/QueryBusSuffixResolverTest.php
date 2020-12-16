@@ -21,12 +21,12 @@ final class QueryBusSuffixResolverTest extends TestCase
     
     private QueryBus $queryBus;
     
-    private TestQuery_Fetcher $queryFetcher;
+    private FakeQuery_Fetcher $queryFetcher;
     
     
     public function setUp() : void
     {
-        $queryFetcher = new TestQuery_Fetcher();
+        $queryFetcher = new FakeQuery_Fetcher();
         $serviceLocator = new ServiceLocator([
             get_class($queryFetcher) => static function() use($queryFetcher) { return $queryFetcher; },
         ]);
@@ -43,7 +43,7 @@ final class QueryBusSuffixResolverTest extends TestCase
     
     public function test_can_execute_fetcher() : void
     {
-        $query = new TestQuery();
+        $query = new FakeQuery();
         $this->queryBus->find($query);
         
         self::assertCount(1, $this->queryFetcher->getFetchedQueries());
@@ -53,7 +53,7 @@ final class QueryBusSuffixResolverTest extends TestCase
     
     public function test_throws_an_exception_when_no_fetcher() : void
     {
-        $command = new TestQueryWithoutFetcher();
+        $command = new FakeQueryWithoutFetcher();
         
         $this->expectException(QueryFetcherNotFoundError::class);
         $this->queryBus->find($command);

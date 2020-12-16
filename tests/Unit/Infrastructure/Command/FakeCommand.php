@@ -5,7 +5,7 @@ namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Command;
 use Mediagone\CQRS\Bus\Domain\Command\Command;
 
 
-final class TestCommand implements Command
+final class FakeCommand implements Command
 {
     private $callback;
     

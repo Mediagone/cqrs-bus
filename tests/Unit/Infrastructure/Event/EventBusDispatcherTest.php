@@ -11,7 +11,7 @@ use TypeError;
 /**
  * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatcher
  */
-final class EventBusEventDispatcherTest extends TestCase
+final class EventBusDispatcherTest extends TestCase
 {
     //========================================================================================================
     // Init
@@ -19,12 +19,12 @@ final class EventBusEventDispatcherTest extends TestCase
     
     private EventBus $eventBus;
     
-    private TestEventListener $eventListener;
+    private FakeEventListener $eventListener;
     
     
     public function setUp() : void
     {
-        $this->eventListener = new TestEventListener();
+        $this->eventListener = new FakeEventListener();
         $this->eventBus = new EventBusDispatcher([$this->eventListener]);
     }
     
@@ -44,7 +44,7 @@ final class EventBusEventDispatcherTest extends TestCase
     
     public function test_can_execute_handler() : void
     {
-        $command = new TestEvent();
+        $command = new FakeEvent();
         $this->eventBus->notify($command);
         
         self::assertCount(1, $this->eventListener->getListenedEvents());
@@ -54,11 +54,11 @@ final class EventBusEventDispatcherTest extends TestCase
     
     public function test_can_execute_multiple_handlers() : void
     {
-        $eventListener = new TestEventListener();
-        $eventListener2 = new TestEventListener();
+        $eventListener = new FakeEventListener();
+        $eventListener2 = new FakeEventListener();
         $eventBus = new EventBusDispatcher([$eventListener, $eventListener2]);
         
-        $command = new TestEvent();
+        $command = new FakeEvent();
         $eventBus->notify($command);
         
         self::assertCount(1, $eventListener->getListenedEvents());

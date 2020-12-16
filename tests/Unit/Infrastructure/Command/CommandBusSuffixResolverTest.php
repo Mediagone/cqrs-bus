@@ -19,13 +19,13 @@ final class CommandBusSuffixResolverTest extends TestCase
     
     public function test_can_execute_handler() : void
     {
-        $commandHandler = new TestCommand_Handler();
+        $commandHandler = new FakeCommand_Handler();
         $serviceLocator = new ServiceLocator([
-            TestCommand_Handler::class => fn() => $commandHandler,
+            FakeCommand_Handler::class => fn() => $commandHandler,
         ]);
         $bus = new CommandBusSuffixResolver($serviceLocator, '_Handler', null);
         
-        $command = new TestCommand();
+        $command = new FakeCommand();
         $bus->do($command);
         self::assertCount(1, $commandHandler->getHandledCommands());
         self::assertSame($command, $commandHandler->getHandledCommands()[0]);
@@ -34,7 +34,7 @@ final class CommandBusSuffixResolverTest extends TestCase
     
     public function test_throws_an_exception_when_no_handler() : void
     {
-        $command = new TestCommand();
+        $command = new FakeCommand();
         
         $serviceLocator = new ServiceLocator([]);
         $bus = new CommandBusSuffixResolver($serviceLocator, '_Handler', null);

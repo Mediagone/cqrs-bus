@@ -25,7 +25,7 @@ final class CommandBusQueueTest extends TestCase
     public function setUp() : void
     {
         $serviceLocator = new ServiceLocator([
-            TestCommand_Handler::class => fn() => new TestCommand_Handler(),
+            FakeCommand_Handler::class => fn() => new FakeCommand_Handler(),
         ]);
         
         $this->commandBus = new CommandBusQueue(
@@ -44,13 +44,13 @@ final class CommandBusQueueTest extends TestCase
         $bus = $this->commandBus;
         $messages = [];
         
-        $bus->do(new TestCommand(static function() use (&$messages, $bus) {
-            $bus->do(new TestCommand(static function() use (&$messages) { $messages[] = '2'; }));
-            $bus->do(new TestCommand(static function() use (&$messages) { $messages[] = '3'; }));
+        $bus->do(new FakeCommand(static function() use (&$messages, $bus) {
+            $bus->do(new FakeCommand(static function() use (&$messages) { $messages[] = '2'; }));
+            $bus->do(new FakeCommand(static function() use (&$messages) { $messages[] = '3'; }));
             $messages[] = '1';
         }));
         
-        $bus->do(new TestCommand(static function() use (&$messages) { $messages[] = '4'; }));
+        $bus->do(new FakeCommand(static function() use (&$messages) { $messages[] = '4'; }));
         
         self::assertSame(['1', '2', '3', '4'], $messages);
     }
@@ -62,14 +62,14 @@ final class CommandBusQueueTest extends TestCase
         $messages = [];
         
         $executeNewCommandsThenAppendMessage = static function () use (&$messages, $bus) {
-            $bus->do(new TestCommand(static function () use (&$messages) { $messages[] = '2 //should be ignored'; }));
-            $bus->do(new TestCommand(static function () use (&$messages) { $messages[] = '3 //should be ignored'; }));
+            $bus->do(new FakeCommand(static function () use (&$messages) { $messages[] = '2 //should be ignored'; }));
+            $bus->do(new FakeCommand(static function () use (&$messages) { $messages[] = '3 //should be ignored'; }));
             $messages[] = '1';
             throw new Exception();
         };
         
         try {
-            $bus->do(new TestCommand($executeNewCommandsThenAppendMessage));
+            $bus->do(new FakeCommand($executeNewCommandsThenAppendMessage));
         }
         catch (Exception $ex) {
             // ignore the exception
@@ -90,14 +90,14 @@ final class CommandBusQueueTest extends TestCase
         };
         
         try {
-            $bus->do(new TestCommand($executeNewCommandsThenAppendMessage));
+            $bus->do(new FakeCommand($executeNewCommandsThenAppendMessage));
         }
         catch (Exception $ex) {
             // ignore the exception
         }
         
         $resumeMessage = static function() use (&$messages) { $messages[] = 'resume after exception'; };
-        $bus->do(new TestCommand($resumeMessage));
+        $bus->do(new FakeCommand($resumeMessage));
         
         self::assertSame(['1', 'resume after exception'], $messages);
     }

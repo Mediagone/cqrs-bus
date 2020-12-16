@@ -5,7 +5,7 @@ namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Query;
 use Mediagone\CQRS\Bus\Domain\Query\Query;
 
 
-final class TestQuery implements Query
+final class FakeQuery implements Query
 {
     private $callback;
     
