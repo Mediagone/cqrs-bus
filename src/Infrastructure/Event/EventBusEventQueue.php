@@ -4,17 +4,19 @@ namespace Mediagone\CQRS\Bus\Infrastructure\Event;
 
 use Mediagone\CQRS\Bus\Domain\Event\Event;
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
-use Mediagone\CQRS\Bus\Domain\Event\EventListener;
 
 
-final class EventBusDispatchingToListeners implements EventBus
+class EventBusEventQueue implements EventBus
 {
     //========================================================================================================
-    // Properties
+    // Fields
     //========================================================================================================
     
-    /** @var EventListener[] */
-    private array $listeners;
+    private EventBus $innerBus;
+    
+    private array $eventQueue = [];
+    
+    private bool $isCollecting = false;
     
     
     
@@ -22,9 +24,9 @@ final class EventBusDispatchingToListeners implements EventBus
     // Constructor
     //========================================================================================================
     
-    public function __construct(array $listeners)
+    public function __construct(EventBus $innerBus)
     {
-        $this->listeners = $this->checkListenerArray(...$listeners);
+        $this->innerBus = $innerBus;
     }
     
     
@@ -33,13 +35,49 @@ final class EventBusDispatchingToListeners implements EventBus
     // Methods
     //========================================================================================================
     
+    /**
+     * @todo Check if no event is created and dispatched from inside an event listener?
+     */
     public function notify(Event $event) : void
     {
-        foreach ($this->listeners as $listener) {
-            if ($listener->supports($event)) {
-                $listener->listen($event);
-            }
+        $this->eventQueue[] = $event;
+        
+        if (!$this->isCollecting) {
+            $this->dispatchCollectedEvents();
         }
+    }
+    
+    
+    /**
+     *
+     */
+    public function startCollecting() : void
+    {
+        $this->isCollecting = true;
+    }
+    
+    
+    /**
+     *
+     */
+    public function releaseCollected() : void
+    {
+        $this->dispatchCollectedEvents();
+        $this->isCollecting = false;
+    }
+    
+    
+    /**
+     *
+     */
+    public function discardCollected() : array
+    {
+        $collectedEvents = $this->eventQueue;
+        
+        $this->eventQueue = [];
+        $this->isCollecting = false;
+        
+        return $collectedEvents;
     }
     
     
@@ -48,9 +86,11 @@ final class EventBusDispatchingToListeners implements EventBus
     // Helpers
     //========================================================================================================
     
-    private function checkListenerArray(EventListener ...$listeners) : array
+    private function dispatchCollectedEvents() : void
     {
-        return $listeners;
+        while ($event = array_shift($this->eventQueue)) {
+            $this->innerBus->notify($event);
+        }
     }
     
     

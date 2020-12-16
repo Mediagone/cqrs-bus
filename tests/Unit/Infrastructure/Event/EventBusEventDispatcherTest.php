@@ -3,15 +3,15 @@
 namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Event;
 
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatchingToListeners;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 
 /**
- * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatchingToListeners
+ * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventDispatcher
  */
-final class EventBusDispatchingToListenersTest extends TestCase
+final class EventBusEventDispatcherTest extends TestCase
 {
     //========================================================================================================
     // Init
@@ -25,7 +25,7 @@ final class EventBusDispatchingToListenersTest extends TestCase
     public function setUp() : void
     {
         $this->eventListener = new TestEventListener();
-        $this->eventBus = new EventBusDispatchingToListeners([$this->eventListener]);
+        $this->eventBus = new EventBusEventDispatcher([$this->eventListener]);
     }
     
     
@@ -38,7 +38,7 @@ final class EventBusDispatchingToListenersTest extends TestCase
     {
         $this->expectException(TypeError::class);
         
-        new EventBusDispatchingToListeners([1]);
+        new EventBusEventDispatcher([1]);
     }
     
     
@@ -56,7 +56,7 @@ final class EventBusDispatchingToListenersTest extends TestCase
     {
         $eventListener = new TestEventListener();
         $eventListener2 = new TestEventListener();
-        $eventBus = new EventBusDispatchingToListeners([$eventListener, $eventListener2]);
+        $eventBus = new EventBusEventDispatcher([$eventListener, $eventListener2]);
         
         $command = new TestEvent();
         $eventBus->notify($command);

@@ -6,8 +6,8 @@ use Mediagone\CQRS\Bus\Domain\Command\CommandBus;
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
 use Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventsCollector;
 use Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusSuffixResolver;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusCollectingEvents;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatchingToListeners;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventQueue;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventDispatcher;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -31,7 +31,7 @@ final class CommandBusEventsCollectorTest extends TestCase
     
     public function setUp() : void
     {
-        $this->eventBus = new EventBusCollectingEvents(new EventBusDispatchingToListeners([new TestEventListener()]));
+        $this->eventBus = new EventBusEventQueue(new EventBusEventDispatcher([new TestEventListener()]));
         
         $serviceLocator = new ServiceLocator([
             TestCommand_Handler::class => fn() => new TestCommand_Handler(),

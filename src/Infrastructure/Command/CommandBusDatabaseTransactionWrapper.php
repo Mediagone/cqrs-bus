@@ -13,7 +13,7 @@ use Mediagone\CQRS\Bus\Domain\Command\CommandBus;
 /**
  * Wraps the Command inside a database transaction, with automatic rollback on failure.
  */
-final class CommandBusWrappingDatabaseTransaction implements CommandBus
+final class CommandBusDatabaseTransactionWrapper implements CommandBus
 {
     //========================================================================================================
     // Properties
