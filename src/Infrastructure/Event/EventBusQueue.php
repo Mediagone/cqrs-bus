@@ -6,7 +6,7 @@ use Mediagone\CQRS\Bus\Domain\Event\Event;
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
 
 
-class EventBusEventQueue implements EventBus
+class EventBusQueue implements EventBus
 {
     //========================================================================================================
     // Fields

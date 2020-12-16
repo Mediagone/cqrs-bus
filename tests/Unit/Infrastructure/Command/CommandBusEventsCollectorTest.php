@@ -4,10 +4,10 @@ namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Command;
 
 use Mediagone\CQRS\Bus\Domain\Command\CommandBus;
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
-use Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventsCollector;
+use Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventCollector;
 use Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusSuffixResolver;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventQueue;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventDispatcher;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatcher;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -16,7 +16,7 @@ use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\TestEventListener;
 
 
 /**
- * @covers \Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventsCollector
+ * @covers \Mediagone\CQRS\Bus\Infrastructure\Command\CommandBusEventCollector
  */
 final class CommandBusEventsCollectorTest extends TestCase
 {
@@ -31,13 +31,13 @@ final class CommandBusEventsCollectorTest extends TestCase
     
     public function setUp() : void
     {
-        $this->eventBus = new EventBusEventQueue(new EventBusEventDispatcher([new TestEventListener()]));
+        $this->eventBus = new EventBusQueue(new EventBusDispatcher([new TestEventListener()]));
         
         $serviceLocator = new ServiceLocator([
             TestCommand_Handler::class => fn() => new TestCommand_Handler(),
         ]);
     
-        $this->commandBus = new CommandBusEventsCollector(
+        $this->commandBus = new CommandBusEventCollector(
             new CommandBusSuffixResolver($serviceLocator, '_Handler', null),
             $this->eventBus
         );

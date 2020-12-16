@@ -5,10 +5,10 @@ namespace Mediagone\CQRS\Bus\Infrastructure\Command;
 use Exception;
 use Mediagone\CQRS\Bus\Domain\Command\Command;
 use Mediagone\CQRS\Bus\Domain\Command\CommandBus;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventQueue;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue;
 
 
-final class CommandBusEventsCollector implements CommandBus
+final class CommandBusEventCollector implements CommandBus
 {
     //========================================================================================================
     // Properties
@@ -16,7 +16,7 @@ final class CommandBusEventsCollector implements CommandBus
     
     private CommandBus $innerBus;
 
-    private EventBusEventQueue $eventCollector;
+    private EventBusQueue $eventCollector;
     
     
     
@@ -27,7 +27,7 @@ final class CommandBusEventsCollector implements CommandBus
     /**
      * @param CommandBus $innerBus A nested wrapper-bus to define a custom behavior or execute the command.
      */
-    public function __construct(CommandBus $innerBus, EventBusEventQueue $eventBus)
+    public function __construct(CommandBus $innerBus, EventBusQueue $eventBus)
     {
         $this->innerBus = $innerBus;
         $this->eventCollector = $eventBus;

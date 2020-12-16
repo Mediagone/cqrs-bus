@@ -3,13 +3,13 @@
 namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Event;
 
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventDispatcher;
-use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventQueue;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatcher;
+use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue;
 use PHPUnit\Framework\TestCase;
 
 
 /**
- * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusEventQueue
+ * @covers \Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue
  */
 final class EventBusEventQueueTest extends TestCase
 {
@@ -25,7 +25,7 @@ final class EventBusEventQueueTest extends TestCase
     public function setUp() : void
     {
         $this->eventListener = new TestEventListener();
-        $this->eventBus = new EventBusEventQueue(new EventBusEventDispatcher([$this->eventListener]));
+        $this->eventBus = new EventBusQueue(new EventBusDispatcher([$this->eventListener]));
     }
     
     

@@ -7,7 +7,7 @@ use Mediagone\CQRS\Bus\Domain\Event\EventBus;
 use Mediagone\CQRS\Bus\Domain\Event\EventListener;
 
 
-final class EventBusEventDispatcher implements EventBus
+final class EventBusDispatcher implements EventBus
 {
     //========================================================================================================
     // Properties
