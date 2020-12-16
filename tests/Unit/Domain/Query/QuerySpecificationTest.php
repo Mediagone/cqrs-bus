@@ -4,7 +4,7 @@ namespace Tests\Mediagone\CQRS\Bus\Domain\Query;
 
 use Mediagone\CQRS\Bus\Domain\Query\Query;
 use Mediagone\CQRS\Bus\Domain\Query\SpecificationQuery;
-use Mediagone\DDD\Doctrine\Specifications\SpecificationCollection;
+use Mediagone\Doctrine\Specifications\SpecificationCollection;
 use PHPUnit\Framework\TestCase;
 
 

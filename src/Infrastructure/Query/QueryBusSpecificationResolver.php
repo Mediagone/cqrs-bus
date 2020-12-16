@@ -6,7 +6,7 @@ use Mediagone\CQRS\Bus\Domain\Query\Query;
 use Mediagone\CQRS\Bus\Domain\Query\QueryBus;
 use Mediagone\CQRS\Bus\Domain\Query\SpecificationQuery;
 use Mediagone\CQRS\Bus\Infrastructure\Query\Utils\QueryFetcherNotFoundError;
-use Mediagone\DDD\Doctrine\Specifications\SpecificationRepository;
+use Mediagone\Doctrine\Specifications\SpecificationRepository;
 
 
 /**

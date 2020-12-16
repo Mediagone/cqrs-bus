@@ -3,7 +3,7 @@
 namespace Mediagone\CQRS\Bus\Domain\Query;
 
 use LogicException;
-use Mediagone\DDD\Doctrine\Specifications\SpecificationRepository;
+use Mediagone\Doctrine\Specifications\SpecificationRepository;
 
 
 class SpecificationQueryFetcher implements QueryFetcher

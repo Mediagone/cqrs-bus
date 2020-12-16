@@ -5,8 +5,8 @@ namespace Tests\Mediagone\CQRS\Bus\Domain\Query;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Mediagone\CQRS\Bus\Domain\Query\SpecificationQuery;
-use Mediagone\DDD\Doctrine\Specifications\Specification;
-use Mediagone\DDD\Doctrine\Specifications\SpecificationRepositoryResult;
+use Mediagone\Doctrine\Specifications\Specification;
+use Mediagone\Doctrine\Specifications\SpecificationRepositoryResult;
 
 
 final class FakeSpecificationQuery extends SpecificationQuery
