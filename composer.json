@@ -15,9 +15,20 @@
             "Mediagone\\CQRS\\Bus\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Mediagone\\CQRS\\Bus\\": "tests/Unit/"
+        }
+    },
     "require": {
         "php": "^7.4",
         "doctrine/orm": "^2.7",
         "symfony/dependency-injection": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "scripts": {
+        "phpunit": "phpunit -c phpunit.xml.dist --testsuite Unit_Tests"
     }
-}
+  }
