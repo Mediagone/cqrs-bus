@@ -4,7 +4,7 @@ namespace Tests\Mediagone\CQRS\Bus\Domain\Query;
 
 use Mediagone\CQRS\Bus\Domain\Query\Query;
 use Mediagone\CQRS\Bus\Domain\Query\SpecificationQuery;
-use Mediagone\Doctrine\Specifications\SpecificationCollection;
+use Mediagone\Doctrine\Specifications\SpecificationCompound;
 use PHPUnit\Framework\TestCase;
 
 
@@ -22,7 +22,7 @@ final class QuerySpecificationTest extends TestCase
         $query = FakeSpecificationQuery::create();
         
         self::assertInstanceOf(SpecificationQuery::class, $query);
-        self::assertInstanceOf(SpecificationCollection::class, $query);
+        self::assertInstanceOf(SpecificationCompound::class, $query);
         self::assertInstanceOf(Query::class, $query);
     }
     

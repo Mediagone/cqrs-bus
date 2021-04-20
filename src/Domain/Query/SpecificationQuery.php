@@ -2,10 +2,10 @@
 
 namespace Mediagone\CQRS\Bus\Domain\Query;
 
-use Mediagone\Doctrine\Specifications\SpecificationCollection;
+use Mediagone\Doctrine\Specifications\SpecificationCompound;
 
 
-abstract class SpecificationQuery extends SpecificationCollection implements Query
+abstract class SpecificationQuery extends SpecificationCompound implements Query
 {
 
 }
