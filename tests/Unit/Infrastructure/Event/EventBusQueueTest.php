@@ -2,7 +2,6 @@
 
 namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Event;
 
-use Mediagone\CQRS\Bus\Domain\Event\EventBus;
 use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusDispatcher;
 use Mediagone\CQRS\Bus\Infrastructure\Event\EventBusQueue;
 use PHPUnit\Framework\TestCase;
@@ -14,76 +13,70 @@ use PHPUnit\Framework\TestCase;
 final class EventBusQueueTest extends TestCase
 {
     //========================================================================================================
-    // Init
-    //========================================================================================================
-    
-    private EventBus $eventBus;
-    
-    private FakeEventListener $eventListener;
-    
-    
-    public function setUp() : void
-    {
-        $this->eventListener = new FakeEventListener();
-        $this->eventBus = new EventBusQueue(new EventBusDispatcher([$this->eventListener]));
-    }
-    
-    
-    
-    //========================================================================================================
     // Tests
     //========================================================================================================
     
     public function test_can_dispatch_an_event() : void
     {
+        $listener = new FakeEventListener();
+        $eventBus = new EventBusQueue(new EventBusDispatcher(new FakeListenerProvider([$listener])));
+    
         $event = new FakeEvent();
-        $this->eventBus->dispatch($event);
+        $eventBus->dispatch($event);
         
-        self::assertCount(1, $this->eventListener->getListenedEvents());
-        self::assertSame($event, $this->eventListener->getListenedEvents()[0]);
+        self::assertCount(1, $listener->getListenedEvents());
+        self::assertSame($event, $listener->getListenedEvents()[0]);
     }
     
     
-    public function test_can_collect_an_event() : void
+    public function test_can_collect_events() : void
     {
+        $listener = new FakeEventListener();
+        $eventBus = new EventBusQueue(new EventBusDispatcher(new FakeListenerProvider([$listener])));
+        
         $event = new FakeEvent();
+        $eventBus->startCollecting();
+        $eventBus->dispatch($event);
         
-        $this->eventBus->startCollecting();
-        $this->eventBus->dispatch($event);
-        
-        self::assertCount(0, $this->eventListener->getListenedEvents());
+        self::assertCount(0, $listener->getListenedEvents());
     }
     
     
     public function test_can_release_collected_events() : void
     {
+        $listener = new FakeEventListener();
+        $eventBus = new EventBusQueue(new EventBusDispatcher(new FakeListenerProvider([$listener])));
+        
         $event = new FakeEvent();
         $event2 = new FakeEvent();
+    
+        $eventBus->startCollecting();
+        $eventBus->dispatch($event);
+        $eventBus->dispatch($event2);
         
-        $this->eventBus->startCollecting();
-        $this->eventBus->dispatch($event);
-        $this->eventBus->dispatch($event2);
-        
-        self::assertCount(0, $this->eventListener->getListenedEvents());
-        
-        $this->eventBus->releaseCollected();
-        self::assertCount(2, $this->eventListener->getListenedEvents());
-        self::assertSame($event, $this->eventListener->getListenedEvents()[0]);
-        self::assertSame($event2, $this->eventListener->getListenedEvents()[1]);
+        self::assertCount(0, $listener->getListenedEvents());
+    
+        $eventBus->releaseCollected();
+        self::assertCount(2, $listener->getListenedEvents());
+        self::assertSame($event, $listener->getListenedEvents()[0]);
+        self::assertSame($event2, $listener->getListenedEvents()[1]);
     }
     
     
     public function test_can_discard_collected_event() : void
     {
+        $listener = new FakeEventListener();
+        $eventBus = new EventBusQueue(new EventBusDispatcher(new FakeListenerProvider([$listener])));
+        
         $event = new FakeEvent();
+    
+        $eventBus->startCollecting();
+        $eventBus->dispatch($event);
         
-        $this->eventBus->startCollecting();
-        $this->eventBus->dispatch($event);
-        
-        self::assertCount(0, $this->eventListener->getListenedEvents());
-        
-        $this->eventBus->discardCollected();
-        self::assertCount(0, $this->eventListener->getListenedEvents());
+        self::assertCount(0, $listener->getListenedEvents());
+    
+        $eventBus->discardCollected();
+        self::assertCount(0, $listener->getListenedEvents());
     }
     
     

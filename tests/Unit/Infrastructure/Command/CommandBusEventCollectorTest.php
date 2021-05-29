@@ -13,6 +13,7 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\FakeEvent;
 use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\FakeEventListener;
+use Tests\Mediagone\CQRS\Bus\Infrastructure\Event\FakeListenerProvider;
 
 
 /**
@@ -31,7 +32,9 @@ final class CommandBusEventCollectorTest extends TestCase
     
     public function setUp() : void
     {
-        $this->eventBus = new EventBusQueue(new EventBusDispatcher([new FakeEventListener()]));
+        $eventListener = new FakeEventListener();
+        $eventBus = new EventBusDispatcher(new FakeListenerProvider([$eventListener]));
+        $this->eventBus = new EventBusQueue($eventBus);
         
         $serviceLocator = new ServiceLocator([
             FakeCommand_Handler::class => fn() => new FakeCommand_Handler(),

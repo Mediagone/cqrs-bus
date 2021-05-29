@@ -4,7 +4,7 @@ namespace Mediagone\CQRS\Bus\Infrastructure\Event;
 
 use Mediagone\CQRS\Bus\Domain\Event\Event;
 use Mediagone\CQRS\Bus\Domain\Event\EventBus;
-use Mediagone\CQRS\Bus\Domain\Event\EventListener;
+use Mediagone\CQRS\Bus\Infrastructure\Event\Utils\EventListenerProvider;
 
 
 final class EventBusDispatcher implements EventBus
@@ -13,8 +13,7 @@ final class EventBusDispatcher implements EventBus
     // Properties
     //========================================================================================================
     
-    /** @var EventListener[] */
-    private array $listeners;
+    private EventListenerProvider $provider;
     
     
     
@@ -22,9 +21,9 @@ final class EventBusDispatcher implements EventBus
     // Constructor
     //========================================================================================================
     
-    public function __construct(array $listeners)
+    public function __construct(EventListenerProvider $listenerProvider)
     {
-        $this->listeners = $this->checkListenerArray(...$listeners);
+        $this->provider = $listenerProvider;
     }
     
     
@@ -35,22 +34,11 @@ final class EventBusDispatcher implements EventBus
     
     public function dispatch(Event $event) : void
     {
-        foreach ($this->listeners as $listener) {
+        foreach ($this->provider->getListeners() as $listener) {
             if ($listener->supports($event)) {
                 $listener->listen($event);
             }
         }
-    }
-    
-    
-    
-    //========================================================================================================
-    // Helpers
-    //========================================================================================================
-    
-    private function checkListenerArray(EventListener ...$listeners) : array
-    {
-        return $listeners;
     }
     
     
