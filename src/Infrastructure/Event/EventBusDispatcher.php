@@ -33,7 +33,7 @@ final class EventBusDispatcher implements EventBus
     // Methods
     //========================================================================================================
     
-    public function notify(Event $event) : void
+    public function dispatch(Event $event) : void
     {
         foreach ($this->listeners as $listener) {
             if ($listener->supports($event)) {

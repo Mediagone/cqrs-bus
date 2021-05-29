@@ -38,7 +38,7 @@ class EventBusQueue implements EventBus
     /**
      * @todo Check if no event is created and dispatched from inside an event listener?
      */
-    public function notify(Event $event) : void
+    public function dispatch(Event $event) : void
     {
         $this->eventQueue[] = $event;
         
@@ -89,7 +89,7 @@ class EventBusQueue implements EventBus
     private function dispatchCollectedEvents() : void
     {
         while ($event = array_shift($this->eventQueue)) {
-            $this->innerBus->notify($event);
+            $this->innerBus->dispatch($event);
         }
     }
     

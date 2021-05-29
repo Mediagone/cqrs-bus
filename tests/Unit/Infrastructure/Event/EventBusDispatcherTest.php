@@ -45,7 +45,7 @@ final class EventBusDispatcherTest extends TestCase
     public function test_can_execute_handler() : void
     {
         $command = new FakeEvent();
-        $this->eventBus->notify($command);
+        $this->eventBus->dispatch($command);
         
         self::assertCount(1, $this->eventListener->getListenedEvents());
         self::assertSame($command, $this->eventListener->getListenedEvents()[0]);
@@ -59,7 +59,7 @@ final class EventBusDispatcherTest extends TestCase
         $eventBus = new EventBusDispatcher([$eventListener, $eventListener2]);
         
         $command = new FakeEvent();
-        $eventBus->notify($command);
+        $eventBus->dispatch($command);
         
         self::assertCount(1, $eventListener->getListenedEvents());
         self::assertSame($command, $eventListener->getListenedEvents()[0]);

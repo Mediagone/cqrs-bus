@@ -8,5 +8,5 @@ interface EventBus
     /**
      * Routes an event to all registered listeners.
      */
-    public function notify(Event $event) : void;
+    public function dispatch(Event $event) : void;
 }

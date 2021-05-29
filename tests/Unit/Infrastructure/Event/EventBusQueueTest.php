@@ -37,7 +37,7 @@ final class EventBusQueueTest extends TestCase
     public function test_can_dispatch_an_event() : void
     {
         $event = new FakeEvent();
-        $this->eventBus->notify($event);
+        $this->eventBus->dispatch($event);
         
         self::assertCount(1, $this->eventListener->getListenedEvents());
         self::assertSame($event, $this->eventListener->getListenedEvents()[0]);
@@ -49,7 +49,7 @@ final class EventBusQueueTest extends TestCase
         $event = new FakeEvent();
         
         $this->eventBus->startCollecting();
-        $this->eventBus->notify($event);
+        $this->eventBus->dispatch($event);
         
         self::assertCount(0, $this->eventListener->getListenedEvents());
     }
@@ -61,8 +61,8 @@ final class EventBusQueueTest extends TestCase
         $event2 = new FakeEvent();
         
         $this->eventBus->startCollecting();
-        $this->eventBus->notify($event);
-        $this->eventBus->notify($event2);
+        $this->eventBus->dispatch($event);
+        $this->eventBus->dispatch($event2);
         
         self::assertCount(0, $this->eventListener->getListenedEvents());
         
@@ -78,7 +78,7 @@ final class EventBusQueueTest extends TestCase
         $event = new FakeEvent();
         
         $this->eventBus->startCollecting();
-        $this->eventBus->notify($event);
+        $this->eventBus->dispatch($event);
         
         self::assertCount(0, $this->eventListener->getListenedEvents());
         

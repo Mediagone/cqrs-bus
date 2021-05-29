@@ -57,9 +57,9 @@ final class CommandBusEventCollectorTest extends TestCase
         $messages = [];
         
         $commandBus->do(new FakeCommand(static function() use (&$messages, $eventBus) {
-            $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // collected'; }));
+            $eventBus->dispatch(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // collected'; }));
             $messages[] = '1';
-            $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '3 // collected'; }));
+            $eventBus->dispatch(new FakeEvent(static function() use (&$messages) { $messages[] = '3 // collected'; }));
         }));
         
         $commandBus->do(new FakeCommand(static function() use (&$messages) { $messages[] = '4'; }));
@@ -88,7 +88,7 @@ final class CommandBusEventCollectorTest extends TestCase
         
         try {
             $commandBus->do(new FakeCommand(static function() use (&$messages, $eventBus) {
-                $eventBus->notify(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // should be ignored'; }));
+                $eventBus->dispatch(new FakeEvent(static function() use (&$messages) { $messages[] = '2 // should be ignored'; }));
                 $messages[] = '1';
                 
                 throw new RuntimeException();
