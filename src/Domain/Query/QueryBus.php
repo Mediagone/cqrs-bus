@@ -7,7 +7,11 @@ interface QueryBus
 {
     /**
      * Routes a query to its executor and returns the result.
-     * @return mixed The result of the query.
+     *
+     * @template T
+     *
+     * @param Query<T> $query
+     * @return T The result of the query.
      */
     public function find(Query $query);
 }
