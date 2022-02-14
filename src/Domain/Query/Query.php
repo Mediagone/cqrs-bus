@@ -2,6 +2,7 @@
 
 namespace Mediagone\CQRS\Bus\Domain\Query;
 
+
 /**
  * @template T
  */
