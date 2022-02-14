@@ -6,8 +6,10 @@ namespace Mediagone\CQRS\Bus\Domain\Query;
 interface QueryFetcher
 {
     /**
-     * @return mixed The result of the query.
+     * @template T
+     *
+     * @param Query<T> $query
+     * @return T The result of the query.
      */
     public function fetch(Query $query);
-    
 }
