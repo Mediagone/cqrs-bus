@@ -11,7 +11,7 @@ interface QueryBus
      * @template T
      *
      * @param Query<T> $query
-     * @return T The result of the query.
+     * @return ?T The result of the query.
      */
     public function find(Query $query);
 }
