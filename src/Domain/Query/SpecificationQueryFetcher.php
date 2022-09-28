@@ -6,7 +6,7 @@ use LogicException;
 use Mediagone\Doctrine\Specifications\SpecificationRepository;
 
 
-class SpecificationQueryFetcher implements QueryFetcher
+class SpecificationQueryFetcher implements QueryBus
 {
     //========================================================================================================
     // Properties
@@ -31,7 +31,7 @@ class SpecificationQueryFetcher implements QueryFetcher
     // Methods
     //========================================================================================================
     
-    public function fetch(Query $query)
+    public function find(Query $query)
     {
         if (! $query instanceof SpecificationQuery) {
             throw new LogicException('"'.get_class($query).'" must extends the '.SpecificationQuery::class.' class.');

@@ -3,10 +3,10 @@
 namespace Tests\Mediagone\CQRS\Bus\Infrastructure\Query;
 
 use Mediagone\CQRS\Bus\Domain\Query\Query;
-use Mediagone\CQRS\Bus\Domain\Query\QueryFetcher;
+use Mediagone\CQRS\Bus\Domain\Query\QueryBus;
 
 
-final class FakeQuery_Fetcher implements QueryFetcher
+final class FakeQuery_Fetcher implements QueryBus
 {
     private array $handleList = [];
     
@@ -14,7 +14,7 @@ final class FakeQuery_Fetcher implements QueryFetcher
     /**
      * @param FakeQuery $query
      */
-    public function fetch(Query $query)
+    public function find(Query $query)
     {
         $this->handleList[] = $query;
         $query();

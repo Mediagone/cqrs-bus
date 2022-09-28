@@ -14,11 +14,11 @@ final class FakeSpecificationQuery extends SpecificationQuery
     public static function create() : self
     {
         return new self(
-            SpecificationRepositoryResult::MANY_OBJECTS,
             new class() extends Specification {
                 public function modifyBuilder(QueryBuilder $builder) : void { }
                 public function modifyQuery(Query $query) : void { }
             },
+            SpecificationRepositoryResult::MANY_OBJECTS,
         );
     }
     

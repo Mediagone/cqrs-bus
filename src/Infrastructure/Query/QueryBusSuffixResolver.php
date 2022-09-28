@@ -61,7 +61,7 @@ final class QueryBusSuffixResolver implements QueryBus
         
         if ($this->serviceLocator->has($fetcherClassName)) {
             $fetcher = $this->serviceLocator->get($fetcherClassName);
-            return $fetcher->fetch($query);
+            return $fetcher->find($query);
         }
         
         if ($this->next === null) {
