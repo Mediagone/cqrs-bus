@@ -4,7 +4,7 @@ namespace Mediagone\CQRS\Bus\Domain\Query;
 
 
 /**
- * @template T
+ * @template-covariant T
  */
 interface Query
 {
